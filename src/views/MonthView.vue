@@ -116,8 +116,6 @@ const renderIcon = (iconStr: string) => {
     <BizBottomSheet v-model="showSheet">
       <template #header>
         <div class="sheet-header">
-          <button class="icon-btn" @click="showSheet = false" v-html="renderIcon(arrowBackOutline)"></button>
-          <button class="icon-btn add-btn" @click="goToAddEvent" v-html="renderIcon(addOutline)"></button>
         </div>
       </template>
       

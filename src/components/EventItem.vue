@@ -45,6 +45,7 @@ defineProps<{
   color: var(--primary-theme-color);
   font-weight: bold;
   font-size: 1.1rem;
+  margin-right: 6px;
 }
 
 .event-date .day.text-green {
