@@ -1,0 +1,32 @@
+/* Google Fonts are now imported in index.html to prevent Vite parsing issues */
+
+:root {
+  --font-family: 'Battambang', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --bg-color: #f8fafc;
+  --surface-color: #ffffff;
+  --text-color: #1e293b;
+  --text-muted: #64748b;
+  --primary: #646cff;
+}
+
+/* Removed dark mode to enforce light theme matching screenshots */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  width: 100%;
+}
