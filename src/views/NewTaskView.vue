@@ -2,14 +2,19 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
+/** កម្មវិធីកំណត់ផ្លូវ (Router instance) */
 const router = useRouter();
+/** ចំណងជើងកិច្ចការ (Task title) */
 const taskTitle = ref('');
+/** ពេលវេលាកិច្ចការ (Task time) */
 const time = ref('ថ្ងៃនេះ, 9:11 PM');
 
+/** ត្រឡប់ទៅទំព័រមុន (Navigate back) */
 const goBack = () => {
   router.back();
 };
 
+/** រក្សាទុកកិច្ចការថ្មី (Save new task) */
 const saveTask = () => {
   console.log('Task saved:', taskTitle.value, time.value);
   router.back();
@@ -17,27 +22,34 @@ const saveTask = () => {
 </script>
 
 <template>
+  <!-- ទំព័របង្កើតកិច្ចការថ្មី (New task view container) -->
   <div class="new-task-view">
+    <!-- ផ្នែកក្បាល (Header) -->
     <header class="header">
+      <!-- ប៊ូតុងត្រឡប់ក្រោយ (Back button) -->
       <button class="back-btn" @click="goBack">&larr;</button>
       <h2>កិច្ចការថ្មី</h2>
     </header>
     
+    <!-- ទម្រង់បញ្ចូលទិន្នន័យ (Form container) -->
     <div class="form-container">
-      <!-- Fallback to raw inputs if BizInput fails to render without required props -->
+      <!-- ប្រអប់បញ្ចូលចំណងជើងកិច្ចការ (Task title input field) -->
       <input 
         v-model="taskTitle"
         class="task-input"
         placeholder="បញ្ចូលចំណងជើង"
       />
       
+      <!-- ឧបករណ៍ជ្រើសរើសម៉ោង (Time selector) -->
       <div class="time-selector">
         <span class="icon">&#x1F551;</span>
         <span class="time-text">{{ time }}</span>
       </div>
     </div>
     
+    <!-- សកម្មភាពផ្នែកខាងក្រោម (Bottom action area) -->
     <div class="bottom-action">
+      <!-- ប៊ូតុងរក្សាទុក (Save button) -->
       <button class="save-btn" @click="saveTask">រក្សាទុក</button>
     </div>
   </div>

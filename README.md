@@ -1,15 +1,16 @@
 # Khmer Smart Calendar
 
-A beautiful, modular, and fully featured smart calendar application tailored for the Cambodian context. Built with **Vue 3**, **Vite**, and **TypeScript**, this application seamlessly integrates the standard Gregorian calendar with the traditional Khmer lunar calendar.
+A beautiful, modular, and fully featured smart calendar application tailored for the Cambodian context. Built with **Vue 3**, **Vite**, and **TypeScript**, this application seamlessly integrates the standard Gregorian calendar with the traditional Khmer lunar calendar, and offers extreme customization.
 
 ## ✨ Features
 
+- **Dynamic 54-Color Theme System**: A fully integrated `ThemeService` that allows users to instantly switch between 54 vibrant, carefully curated theme colors. Colors are globally reactive and elegantly applied to buttons, calendar highlights, and typography.
 - **Khmer Date Conversion**: Dynamically convert standard dates into full Khmer lunar dates, including lunar day, month, zodiac year (e.g., រោង - Dragon), and stem (e.g., ឆស័ក).
-- **Public Holidays**: Includes a built-in `HolidayService` that categorizes and displays all major Cambodian national and international public holidays.
-- **Zodiac Animal Integration**: Automatically computes and beautifully renders the correct zodiac animal icon for any given year.
-- **Stateless Architecture**: Built with a highly modular, stateless component architecture (`EventItem`, `KhmerDateCard`, `ZodiacAnimalCard`, `WeatherCard`, etc.) making the application scalable and easy to test.
-- **Modern UI Components**: Utilizes the custom `@phanna/ui-framework` to provide sleek elements like `BizSegment` for tabs and `BizYearPickerSheet` for elegant bottom-sheet year selections.
-- **Khmer Typography**: Fully configured to use the beautiful **Battambang** font across the entire application interface.
+- **Public Holidays**: Includes a built-in `HolidayService` that dynamically fetches and displays Cambodian national and international public holidays in real-time as you swipe between calendar months.
+- **Live Weather Integration**: Uses a free Open-Meteo API to dynamically fetch and display real-time weather conditions directly inside the application.
+- **Zodiac Animal Integration**: Automatically computes and beautifully renders the correct zodiac animal icon for any given year, including dual-zodiac combinations.
+- **Modern UI Framework**: Built completely on top of the custom `@phanna/ui-framework`, utilizing advanced components like `BizKhmerCalendar`, `BizBottomSheet`, `BizNoResult`, `BizSegment`, and `BizYearPickerSheet` for a premium native app feel.
+- **Fully Localized**: Beautifully typeset with the native **Battambang** font across the entire interface. The codebase itself is also thoroughly documented with Khmer language comments for all properties, classes, and Vue functions!
 
 ## 🛠 Tech Stack
 
@@ -24,15 +25,15 @@ A beautiful, modular, and fully featured smart calendar application tailored for
 
 ```
 src/
-├── components/       # Reusable, stateless UI components (e.g., EventItem.vue)
-├── services/         # Business logic and data providers (e.g., HolidayService.ts)
+├── components/       # Reusable, stateless UI components (e.g., EventItem.vue, BizNoResult fallbacks)
+├── services/         # Business logic and data providers (HolidayService, ThemeService, WeatherService)
 ├── views/            # Main application pages
 │   ├── DayView.vue       # Daily breakdown with lunar details and zodiac
 │   ├── EventsView.vue    # Grouped holiday and event list
-│   ├── MonthView.vue     # Full calendar grid view
-│   ├── MoreView.vue      # Settings and application configuration
+│   ├── MonthView.vue     # Full calendar grid view featuring BizBottomSheet & swipe-to-fetch holidays
+│   ├── MoreView.vue      # Settings panel for the 30-color dynamic theme engine
 │   ├── NewTaskView.vue   # Form to create new tasks/events
-│   └── WeatherView.vue   # Location-based weather overview
+│   └── WeatherView.vue   # Live location-based weather overview
 ├── router/           # Vue Router configuration
 ├── App.vue           # Root component and layout wrapper
 └── main.ts           # Application entry point
@@ -74,6 +75,6 @@ The output will be generated in the `dist/` directory.
 
 ## 🎨 Architecture Highlights
 
-- **`HolidayService.ts`**: Provides a clean, static data source for national holidays, separating data concerns from the view layer.
-- **Event Bubbling Fixes**: Custom implementations for complex UI interactions, such as ensuring `BizYearPickerSheet` handles touch and click event propagation correctly without immediately dismissing.
-- **Performance**: Heavy usage of computed properties and optimized Vite chunking ensures lightning-fast load times.
+- **`ThemeService.ts`**: An elegant service that manages CSS variables dynamically via the `:root` pseudo-class and safely persists user color preferences.
+- **`HolidayService.ts`**: Provides a clean, static data source for national holidays, which the `MonthView.vue` naturally listens to via `@month-changed` emitted events!
+- **Deep CSS Scoping & Specificity**: Utilizes Vue's `:deep()` compiler macros and the `!important` global wildcard overrides to ensure framework components perfectly adopt user-selected theme colors.

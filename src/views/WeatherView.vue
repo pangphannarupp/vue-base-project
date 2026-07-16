@@ -1,41 +1,36 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
 import WeatherCard from '../components/WeatherCard.vue';
+import { WeatherService, type WeatherLocation } from '../services/WeatherService';
 
-const locations = [
-  {
-    id: 1,
-    name: 'ភ្នំពេញ', // Phnom Penh
-    temp: 'NA',
-    image: 'https://images.unsplash.com/photo-1581451528825-968b5ce53b75?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    weather: '?'
-  },
-  {
-    id: 2,
-    name: 'សៀមរាប', // Siem Reap
-    temp: 'NA',
-    image: 'https://images.unsplash.com/photo-1560961803-057d2a5a544b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    weather: '?'
-  },
-  {
-    id: 3,
-    name: 'ព្រះសីហនុ', // Sihanoukville
-    temp: 'NA',
-    image: 'https://images.unsplash.com/photo-1596700685934-45300d075217?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    weather: '?'
-  }
-];
+/** បញ្ជីទីតាំងអាកាសធាតុ (List of weather locations) */
+const locations = ref<WeatherLocation[]>([]);
+/** ស្ថានភាពកំពុងផ្ទុកទិន្នន័យ (Loading state flag) */
+const isLoading = ref(true);
+
+/** ទាញយកទិន្នន័យនៅពេលសមាសភាគត្រូវបានភ្ជាប់ (Fetch data on component mount) */
+onMounted(async () => {
+  isLoading.value = true;
+  locations.value = await WeatherService.getLocations();
+  isLoading.value = false;
+});
 </script>
 
 <template>
+  <!-- ទំព័រអាកាសធាតុ (Weather view container) -->
   <div class="weather-view">
+    <!-- ផ្នែកក្បាល (Header) -->
     <header class="header">
       <h2>អាកាសធាតុ</h2>
-      <button class="add-location-btn">
-        <span class="icon">🏠+</span>
-      </button>
     </header>
     
-    <div class="cards-container">
+    <!-- បង្ហាញនៅពេលកំពុងផ្ទុក (Show loading state) -->
+    <div v-if="isLoading" class="loading-state">
+      <div class="spinner"></div>
+      <p>កំពុងផ្ទុកទិន្នន័យ...</p>
+    </div>
+    <!-- បង្ហាញកាតអាកាសធាតុ (Show weather cards) -->
+    <div v-else class="cards-container">
       <WeatherCard 
         v-for="loc in locations" 
         :key="loc.id"
@@ -48,7 +43,7 @@ const locations = [
 <style scoped>
 .weather-view {
   padding: 16px;
-  background-color: #1c2331;
+  background-color: var(--primary-theme-color);
   min-height: 100vh;
   color: white;
 }
@@ -83,5 +78,28 @@ const locations = [
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 </style>

@@ -1,5 +1,10 @@
 <script setup lang="ts">
-// App.vue now just hosts the router view
+import { onMounted } from 'vue';
+import { ThemeService } from './services/ThemeService';
+
+onMounted(() => {
+  ThemeService.initTheme();
+});
 </script>
 
 <template>

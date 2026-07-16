@@ -1,6 +1,11 @@
 <script setup lang="ts">
+/**
+ * លក្ខណៈដែលត្រូវបញ្ជូនមកកាន់សមាសភាគ (Props for the component)
+ */
 defineProps<{
+  /** រូបតំណាងប្រភេទអត្ថបទ ឬ SVG (Icon string or SVG) */
   icon: string;
+  /** ស្លាកឈ្មោះនៃការកំណត់ (Setting label) */
   label: string;
 }>();
 </script>
@@ -22,7 +27,7 @@ defineProps<{
 
 .item-icon {
   font-size: 1.5rem;
-  color: #5d4037;
+  color: var(--primary-theme-color);
   margin-right: 16px;
   display: flex;
   align-items: center;

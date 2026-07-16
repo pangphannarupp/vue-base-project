@@ -1,21 +1,37 @@
+/**
+ * ចំណុចប្រទាក់សម្រាប់ថ្ងៃឈប់សម្រាក (Interface for Holiday)
+ */
 export interface Holiday {
+  /** លេខសម្គាល់តែមួយគត់ (Unique ID) */
   id: string;
+  /** ថ្ងៃទី (Day number) */
   day: string;
+  /** ឈ្មោះថ្ងៃ (Day name, e.g., ច័ន្ទ) */
   dayName: string;
+  /** ឈ្មោះព្រឹត្តិការណ៍ ឬថ្ងៃឈប់សម្រាក (Event name) */
   eventName: string;
+  /** កំណត់ពណ៌បៃតងសម្រាប់ថ្ងៃពិសេស (Flag for special green color) */
   isGreen?: boolean;
 }
 
+/**
+ * ចំណុចប្រទាក់សម្រាប់ថ្ងៃឈប់សម្រាកតាមខែ (Interface for Holidays grouped by Month)
+ */
 export interface MonthHolidays {
+  /** ឈ្មោះខែ (Month name) */
   monthName: string;
+  /** បញ្ជីព្រឹត្តិការណ៍ក្នុងខែ (List of events in the month) */
   events: Holiday[];
 }
 
+/**
+ * សេវាកម្មសម្រាប់ទាញយកទិន្នន័យថ្ងៃឈប់សម្រាក (Service for fetching holiday data)
+ */
 export class HolidayService {
   /**
-   * Retrieves a list of Khmer public holidays grouped by month for a specific year.
-   * Note: Lunar holidays (Khmer New Year, Pchum Ben, Water Festival, etc.) are approximated 
-   * for the given year in this static dataset.
+   * ទាញយកបញ្ជីថ្ងៃឈប់សម្រាកជាតិខ្មែរ ដែលបានដាក់ជាក្រុមតាមខែ សម្រាប់ឆ្នាំជាក់លាក់ណាមួយ។
+   * ចំណាំ៖ ថ្ងៃឈប់សម្រាកតាមចន្ទគតិ (ចូលឆ្នាំខ្មែរ ភ្ជុំបិណ្ឌ អុំទូក ។ល។) ត្រូវបានប៉ាន់ស្មាន 
+   * សម្រាប់ឆ្នាំដែលបានផ្តល់ឱ្យនៅក្នុងទិន្នន័យថេរនេះ។
    */
   static getHolidays(year: number): MonthHolidays[] {
     return [

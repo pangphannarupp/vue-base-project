@@ -1,12 +1,19 @@
 <script setup lang="ts">
+/**
+ * លក្ខណៈដែលត្រូវបញ្ជូនមកកាន់សមាសភាគ (Props for the component)
+ */
 defineProps<{
+  /** ចំណងជើងក្រុម (Group title) */
   title: string;
 }>();
 </script>
 
 <template>
+  <!-- ក្រុមនៃការកំណត់ (Settings group container) -->
   <div class="settings-group">
+    <!-- ចំណងជើងក្រុម (Group title) -->
     <div class="group-title">{{ title }}</div>
+    <!-- កន្លែងសម្រាប់បញ្ចូលសមាសភាគរង (Slot for child components) -->
     <slot></slot>
   </div>
 </template>

@@ -1,10 +1,19 @@
 <script setup lang="ts">
+/**
+ * លក្ខណៈដែលត្រូវបញ្ជូនមកកាន់សមាសភាគ (Props for the component)
+ */
 defineProps<{
+  /** ទិន្នន័យទីតាំងអាកាសធាតុ (Weather location object) */
   location: {
+    /** លេខសម្គាល់ (ID) */
     id: number;
+    /** ឈ្មោះទីតាំង (Location name) */
     name: string;
+    /** សីតុណ្ហភាព (Temperature) */
     temp: string;
+    /** រូបភាព (Image URL) */
     image: string;
+    /** អាកាសធាតុ (Weather emoji) */
     weather: string;
   }
 }>();

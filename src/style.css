@@ -7,6 +7,35 @@
   --text-color: #1e293b;
   --text-muted: #64748b;
   --primary: #646cff;
+  --primary-theme-color: #e53935;
+  
+  /* @phanna/ui-framework Theme Overrides */
+  --biz-primary: var(--primary-theme-color);
+  --biz-primary-color: var(--primary-theme-color);
+  --biz-primary-variant: var(--primary-theme-color);
+  --biz-calendar-btn-confirm-bg: var(--primary-theme-color);
+}
+
+/* Force Calendar and Picker specific overrides globally */
+* {
+  --biz-calendar-selected-bg: var(--primary-theme-color) !important;
+  --biz-calendar-today-border: var(--primary-theme-color) !important;
+  --biz-calendar-sunday-color: #ff4d4f !important;
+  --biz-danger-color: var(--primary-theme-color) !important;
+  --biz-calendar-text: var(--text-color) !important;
+  --biz-calendar-subtitle-text: var(--text-muted) !important;
+  font-family: var(--font-family) !important;
+}
+
+/* Bottom Nav Global Overrides */
+.biz-bottom-nav-item.is-active .biz-nav-indicator {
+  background-color: color-mix(in srgb, var(--primary-theme-color) 20%, transparent) !important;
+}
+.biz-bottom-nav-item.is-active .biz-nav-icon {
+  color: var(--primary-theme-color) !important;
+}
+.biz-bottom-nav-item.is-active .biz-nav-label {
+  color: var(--primary-theme-color) !important;
 }
 
 /* Removed dark mode to enforce light theme matching screenshots */
