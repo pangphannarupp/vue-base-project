@@ -23,7 +23,10 @@ test.describe('More View Settings', () => {
     const firstColor = page.locator('.color-swatch').first();
     await firstColor.click();
 
+    // Click confirm button to apply the theme and close the sheet
+    await page.getByText('យល់ព្រម').click();
+
     // Bottom sheet should close
-    // await expect(sheet).toBeHidden();
+    await expect(sheet).toBeHidden();
   });
 });
