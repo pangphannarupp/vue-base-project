@@ -12,7 +12,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@phanna/ui-framework": "file:phanna-ui-framework-1.0.2.tgz",
+    "@phanna/ui-framework": "file:phanna-ui-framework-1.0.3.tgz",
     "ionicons": "^8.0.13",
     "vue": "^3.5.39",
     "vue-router": "^5.2.0"

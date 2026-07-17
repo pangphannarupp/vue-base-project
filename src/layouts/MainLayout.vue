@@ -55,6 +55,7 @@ const onTabChange = (tabId: string) => {
 
 .content-area {
   flex: 1;
+  position: relative;
   overflow-y: auto;
   padding-bottom: 70px; /* Space for bottom nav */
 }

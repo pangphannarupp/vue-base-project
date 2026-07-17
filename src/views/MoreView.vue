@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { BizBottomSheet } from '@phanna/ui-framework';
+import { ref, computed } from 'vue';
+import { BizColorPickerSheet, BizCollapsingToolbar } from '@phanna/ui-framework';
 import {
   moonOutline, 
   calendarOutline, 
@@ -14,10 +14,21 @@ import {
   informationCircleOutline,
   starOutline
 } from 'ionicons/icons';
-import MoreHeader from '../components/MoreHeader.vue';
 import SettingsGroup from '../components/SettingsGroup.vue';
 import SettingItem from '../components/SettingItem.vue';
 import { ThemeService } from '../services/ThemeService';
+import { KhmerDate } from '@phanna/ui-framework/dist/KhmerDate';
+import vueSvg from '../assets/vue.svg';
+
+/** ព័ត៌មានកាលបរិច្ឆេទចន្ទគតិខ្មែរ (Khmer lunar date information) */
+const khmerDateInfo = computed(() => {
+  return new KhmerDate(new Date()).toLunar();
+});
+
+const subtitleText = computed(() => {
+  const info = khmerDateInfo.value;
+  return `ឆ្នាំ${info.zodiacYear} ${info.stem} ព.ស. ${info.lunarYear}`;
+});
 
 /** បំប្លែងទម្រង់រូបតំណាង SVG (Render/clean SVG icon string) */
 const renderIcon = (iconStr: string) => {
@@ -48,126 +59,173 @@ const selectTheme = (color: string) => {
 <template>
   <!-- ទំព័រការកំណត់បន្ថែម (More settings view container) -->
   <div class="more-view">
-    <!-- ផ្នែកក្បាលនៃការកំណត់ (Settings header component) -->
-    <MoreHeader 
-      title="Smart Calendar" 
-      subtitle="ឆ្នាំរោង ឆស័ក ព.ស. ២៥៦០" 
-    />
+    <BizCollapsingToolbar
+      :expandedHeight="200"
+      :collapsedHeight="60"
+      :centerTitleOnCollapse="false"
+    >
+      <template #background>
+        <div class="header-bg"></div>
+      </template>
 
-    <!-- ខ្លឹមសារនៃការកំណត់ (Settings content) -->
-    <div class="settings-content">
-      <!-- ក្រុមការកំណត់ប្រតិទិន (Calendar Setting Group) -->
-      <SettingsGroup title="Calendar Setting">
-        <div @click="openThemePicker" class="clickable-setting">
-          <SettingItem :icon="renderIcon(moonOutline)" label="ផ្លាស់ប្តូរស្បែក" />
-        </div>
-        <SettingItem :icon="renderIcon(calendarOutline)" label="ថ្ងៃផ្តើមនៃសប្តាហ៍" />
-        <SettingItem :icon="renderIcon(alarmOutline)" label="កំណត់ការជូនដំណឹង" />
-        <SettingItem :icon="renderIcon(globeOutline)" label="ប្ដូរភាសា" />
-      </SettingsGroup>
-
-      <!-- ក្រុមទិន្នន័យ និងឧបករណ៍ (Data & Tool Group) -->
-      <SettingsGroup title="Data & Tool">
-        <SettingItem :icon="renderIcon(timeOutline)" label="គណនារយៈពេល" />
-        <SettingItem :icon="renderIcon(cloudOutline)" label="បម្រុងទុក / ស្ដារ" />
-      </SettingsGroup>
-
-      <!-- ក្រុមគាំទ្រយើង (Support Us Group) -->
-      <SettingsGroup title="Support Us">
-        <SettingItem :icon="renderIcon(thumbsUpOutline)" label="Facebook" />
-        <SettingItem :icon="renderIcon(chatboxEllipsesOutline)" label="មតិ និងការវាយតម្លៃ" />
-        <SettingItem :icon="renderIcon(shareSocialOutline)" label="ចែករំលែក" />
-      </SettingsGroup>
-
-      <!-- ក្រុមអំពីកម្មវិធី (About App Group) -->
-      <SettingsGroup title="អំពីកម្មវិធី">
-        <SettingItem :icon="renderIcon(informationCircleOutline)" label="អំពីកម្មវិធី" />
-        <SettingItem :icon="renderIcon(starOutline)" label="មុខងារថ្មី" />
-      </SettingsGroup>
-    </div>
-
-    <!-- ម៉ឺនុយជ្រើសរើសស្បែកពណ៌ (Theme Picker Bottom Sheet) using UI framework -->
-    <BizBottomSheet v-model="showThemePicker">
-      <template #header>
-        <div class="sheet-header">
-          <h3>ជ្រើសរើសពណ៌ស្បែក</h3>
+      <template #title>
+        <div class="title-with-profile">
+          <img :src="vueSvg" alt="Profile" class="profile-avatar-inline" />
+          <div class="custom-title">
+            <h1>ប្រតិទិនឆ្លាតវៃ</h1>
+            <p class="subtitle">{{ subtitleText }}</p>
+          </div>
         </div>
       </template>
-      <div class="color-grid">
-        <button 
-          v-for="color in themeColors" 
-          :key="color"
-          class="color-swatch"
-          :style="{ backgroundColor: color }"
-          @click="selectTheme(color)"
-        ></button>
+
+      <!-- ខ្លឹមសារនៃការកំណត់ (Settings content) -->
+      <div class="settings-content">
+        <!-- ក្រុមការកំណត់ប្រតិទិន (Calendar Setting Group) -->
+        <SettingsGroup title="Calendar Setting">
+          <div @click="openThemePicker" class="clickable-setting">
+            <SettingItem :icon="renderIcon(moonOutline)" label="ផ្លាស់ប្តូរស្បែក" />
+          </div>
+          <SettingItem :icon="renderIcon(calendarOutline)" label="ថ្ងៃផ្តើមនៃសប្តាហ៍" />
+          <SettingItem :icon="renderIcon(alarmOutline)" label="កំណត់ការជូនដំណឹង" />
+          <SettingItem :icon="renderIcon(globeOutline)" label="ប្ដូរភាសា" />
+        </SettingsGroup>
+
+        <!-- ក្រុមទិន្នន័យ និងឧបករណ៍ (Data & Tool Group) -->
+        <SettingsGroup title="Data & Tool">
+          <SettingItem :icon="renderIcon(timeOutline)" label="គណនារយៈពេល" />
+          <SettingItem :icon="renderIcon(cloudOutline)" label="បម្រុងទុក / ស្ដារ" />
+        </SettingsGroup>
+
+        <!-- ក្រុមគាំទ្រយើង (Support Us Group) -->
+        <SettingsGroup title="Support Us">
+          <SettingItem :icon="renderIcon(thumbsUpOutline)" label="Facebook" />
+          <SettingItem :icon="renderIcon(chatboxEllipsesOutline)" label="មតិ និងការវាយតម្លៃ" />
+          <SettingItem :icon="renderIcon(shareSocialOutline)" label="ចែករំលែក" />
+        </SettingsGroup>
+
+        <!-- ក្រុមអំពីកម្មវិធី (About App Group) -->
+        <SettingsGroup title="អំពីកម្មវិធី">
+          <SettingItem :icon="renderIcon(informationCircleOutline)" label="អំពីកម្មវិធី" />
+          <SettingItem :icon="renderIcon(starOutline)" label="មុខងារថ្មី" />
+        </SettingsGroup>
       </div>
-    </BizBottomSheet>
+    </BizCollapsingToolbar>
+
+    <!-- ម៉ឺនុយជ្រើសរើសស្បែកពណ៌ (Theme Picker Bottom Sheet) using UI framework -->
+    <BizColorPickerSheet 
+      v-model="showThemePicker"
+      title="ជ្រើសរើសពណ៌ស្បែក"
+      :colors="themeColors"
+      :showActionButtons="true"
+      cancelText="បោះបង់"
+      confirmText="យល់ព្រម"
+      @update:colorValue="selectTheme"
+    />
   </div>
 </template>
 
 <style scoped>
 .more-view {
   background-color: #ffffff;
-  min-height: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
 }
 
+/* Background for the collapsing header */
+.header-bg {
+  height: 100%;
+  width: 100%;
+  background-color: var(--primary-theme-color);
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)),
+    url('https://static.vecteezy.com/system/resources/thumbnails/006/662/397/small/cambodia-famous-landmark-silhouette-style-with-text-inside-vector.jpg');
+  background-size: cover;
+  background-position: center bottom;
+  background-blend-mode: overlay;
+  border-bottom-right-radius: 48px;
+}
+
+/* Custom Title and Profile Layout */
+.title-with-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Fix framework scaling overlap by changing transform origin to bottom.
+   This forces the scaled text to expand upwards instead of downwards,
+   keeping it strictly within the orange header bounds. */
+.more-view :deep(.biz-collapsing-title) {
+  transform-origin: left bottom !important;
+}
+
+.profile-avatar-inline {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: white;
+  padding: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.custom-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+}
+
+.custom-title h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+}
+
+.subtitle {
+  font-size: 0.85rem;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.upgrade-btn {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 20px;
+  color: white;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  backdrop-filter: blur(4px);
+}
+
+.upgrade-btn:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.star-icon {
+  color: #FFD700;
+  font-size: 1.1rem;
+}
+
 .settings-content {
-  padding: 24px;
+  padding: 24px 24px 94px 24px; /* 94px = 24px original padding + 70px bottom nav */
 }
 
 .clickable-setting {
   cursor: pointer;
 }
 
-.sheet-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  padding: 24px 24px 0 24px;
-}
 
-.sheet-header h3 {
-  margin: 0;
-  font-size: 1.2rem;
-  color: #333;
-}
-
-.close-btn {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  color: #888;
-  cursor: pointer;
-}
-
-.color-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 40px);
-  justify-content: center;
-  gap: 16px;
-  padding: 0 24px 40px 24px;
-}
-
-.color-swatch {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  transition: transform 0.2s;
-}
-
-.color-swatch:hover {
-  transform: scale(1.1);
-}
-
-@keyframes slideUp {
-  from { transform: translateY(100%); }
-  to { transform: translateY(0); }
-}
 </style>
