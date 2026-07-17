@@ -7,8 +7,7 @@ test.describe('New Task View', () => {
 
   test('renders form elements and handles input', async ({ page }) => {
     await expect(page.locator('.new-task-view')).toBeVisible();
-    // INTENTIONAL FAILURE FOR CI TESTING
-    await expect(page.locator('h2:has-text("FAILURE_TEST")')).toBeVisible({ timeout: 1000 });
+    await expect(page.locator('h2:has-text("កិច្ចការថ្មី")')).toBeVisible();
 
     // Verify input exists
     const input = page.locator('input[placeholder="បញ្ចូលចំណងជើង"]');
