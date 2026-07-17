@@ -7,8 +7,8 @@ test.describe('New Task View', () => {
 
   test('renders form elements and handles input', async ({ page }) => {
     await expect(page.locator('.new-task-view')).toBeVisible();
-    // INTENTIONAL FAILURE FOR PULL REQUEST TEST
-    await expect(page.locator('h2:has-text("FAILED_PR_MERGE_TEST")')).toBeVisible({ timeout: 1000 });
+    // INTENTIONAL FAILURE TO TEST PR MERGE BLOCKING
+    await expect(page.locator('h2:has-text("PLEASE_BLOCK_THIS_MERGE")')).toBeVisible({ timeout: 1000 });
 
     // Verify input exists
     const input = page.locator('input[placeholder="បញ្ចូលចំណងជើង"]');
