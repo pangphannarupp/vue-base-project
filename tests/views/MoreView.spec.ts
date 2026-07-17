@@ -15,7 +15,9 @@ describe('MoreView.vue', () => {
     const wrapper = mount(MoreView, {
       global: {
         stubs: {
-          BizCollapsingToolbar: true,
+          BizCollapsingToolbar: {
+            template: '<div><slot name="background" /><slot name="title" /><slot /></div>'
+          },
           SettingsGroup: true,
           SettingItem: true,
           BizBottomSheet: true
