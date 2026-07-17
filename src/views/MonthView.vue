@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
+
 import { BizKhmerCalendar, BizBottomSheet, BizNoResult } from '@phanna/ui-framework';
 import { KhmerDate } from '@phanna/ui-framework/dist/KhmerDate';
 import EventItem from '../components/EventItem.vue';
 import KhmerDateCard from '../components/KhmerDateCard.vue';
 import ZodiacAnimalCard from '../components/ZodiacAnimalCard.vue';
 import { HolidayService } from '../services/HolidayService';
-import { addOutline, arrowBackOutline } from 'ionicons/icons';
 
-const router = useRouter();
+
+
 
 /** កាលបរិច្ឆេទដែលបានជ្រើសរើស (Currently selected date) */
 const selectedDate = ref(new Date());
@@ -61,17 +61,8 @@ const onDateSelected = (selection: any) => {
   showSheet.value = true;
 };
 
-const goToAddEvent = () => {
-  router.push('/new-task');
-};
 
-/** បំប្លែងទម្រង់រូបតំណាង SVG (Render/clean SVG icon string) */
-const renderIcon = (iconStr: string) => {
-  if (iconStr.startsWith('data:image/svg+xml;utf8,')) {
-    return iconStr.replace('data:image/svg+xml;utf8,', '');
-  }
-  return iconStr;
-};
+
 </script>
 
 <template>
@@ -229,5 +220,41 @@ const renderIcon = (iconStr: string) => {
 .event-list :deep(.no-result-graphic img) {
   width: 80px !important;
   height: 80px !important;
+}
+</style>
+
+<style>
+/* 
+  Global overrides for BizKhmerCalendar MonthPickerSheet 
+  since the ui-framework package has hardcoded English text.
+*/
+.picker-headers .picker-col-header {
+  font-size: 0 !important;
+}
+.picker-headers .picker-col-header:nth-child(1)::after {
+  content: "ខែ";
+  font-size: 16px;
+  display: block;
+}
+.picker-headers .picker-col-header:nth-child(2)::after {
+  content: "ឆ្នាំ";
+  font-size: 16px;
+  display: block;
+}
+
+.btn-close-picker {
+  font-size: 0 !important;
+}
+.btn-close-picker::after {
+  content: "បិទ";
+  font-size: 16px;
+}
+
+.btn-confirm-picker {
+  font-size: 0 !important;
+}
+.btn-confirm-picker::after {
+  content: "យល់ព្រម";
+  font-size: 16px;
 }
 </style>
