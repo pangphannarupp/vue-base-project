@@ -2,6 +2,18 @@
 
 A beautiful, modular, and fully featured smart calendar application tailored for the Cambodian context. Built with **Vue 3**, **Vite**, and **TypeScript**, this application seamlessly integrates the standard Gregorian calendar with the traditional Khmer lunar calendar, and offers extreme customization.
 
+## 📚 Documentation
+
+We have prepared comprehensive, bilingual (English & Khmer) guides with visual flowcharts to help you understand the project:
+
+- 📖 **[Development Guide](./docs/DEVELOPMENT.md)**: Local setup, MVVM architecture, and Stateful vs Stateless component design.
+- 🧪 **[Testing Guide](./docs/TESTING.md)**: How to run Unit, Component, and E2E (Playwright) tests.
+- 🚀 **[Workflow & Deployment Guide](./docs/WORKFLOW.md)**: Git branching, Pull Requests, CI checks, and GitHub Pages deployment.
+- 🎨 **[UI Components Reference](./docs/COMPONENTS.md)**: Details on using `BizBottomSheet`, `BizKhmerCalendar`, and others.
+- 🧮 **[Khmer Lunar & Zodiac Logic](./docs/KHMER_LOGIC.md)**: How the app calculates traditional dates and zodiacs.
+- 🌐 **[State Management & Theming](./docs/STATE_MANAGEMENT.md)**: Deep dive into the 54-color dynamic CSS variables system.
+- 🤝 **[Contributing Guidelines](./CONTRIBUTING.md)**: Rules for reporting bugs and submitting Pull Requests.
+
 ## ✨ Features
 
 - **Dynamic 54-Color Theme System**: A fully integrated `ThemeService` that allows users to instantly switch between 54 vibrant, carefully curated theme colors. Colors are globally reactive and elegantly applied to buttons, calendar highlights, and typography.
