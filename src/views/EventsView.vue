@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { BizSegment, BizSegmentButton, BizYearPickerSheet } from '@phanna/ui-framework';
+import { BizSegment, BizSegmentButton, BizYearPickerSheet, BizYearPickerAlert, BizYearPickerIsland } from '@phanna/ui-framework';
 import EventItem from '../components/EventItem.vue';
 import { HolidayService } from '../services/HolidayService';
+import { SettingsService } from '../services/SettingsService';
 
 /** ផ្ទាំងបច្ចុប្បន្ន (Current active tab) */
 const currentTab = ref('holidays');
@@ -65,9 +66,36 @@ const openYearPicker = () => {
     
     <!-- ផ្ទាំងជ្រើសរើសឆ្នាំ (Bottom sheet year picker) -->
     <BizYearPickerSheet 
+      v-if="SettingsService.popupStyle.value === 'sheet'"
       v-model="showYearPicker" 
       :initialYear="selectedYear" 
       :showActionButtons="true"
+      cancelText="បិទ"
+      confirmText="យល់ព្រម"
+      @confirm="onYearConfirm"
+      @cancel="showYearPicker = false"
+    />
+
+    <!-- ផ្ទាំងជ្រើសរើសឆ្នាំជាប្រភេទ Alert (Alert year picker) -->
+    <BizYearPickerAlert 
+      v-if="SettingsService.popupStyle.value === 'alert'"
+      v-model="showYearPicker" 
+      :initialYear="selectedYear" 
+      :showActionButtons="true"
+      cancelText="បិទ"
+      confirmText="យល់ព្រម"
+      @confirm="onYearConfirm"
+      @cancel="showYearPicker = false"
+    />
+
+    <!-- ផ្ទាំងជ្រើសរើសឆ្នាំជាប្រភេទ Island (Island year picker) -->
+    <BizYearPickerIsland 
+      v-if="SettingsService.popupStyle.value === 'island'"
+      v-model="showYearPicker" 
+      :initialYear="selectedYear" 
+      :showActionButtons="true"
+      cancelText="បិទ"
+      confirmText="យល់ព្រម"
       @confirm="onYearConfirm"
       @cancel="showYearPicker = false"
     />

@@ -43,9 +43,7 @@ onMounted(async () => {
 <style scoped>
 .weather-view {
   padding: 16px;
-  background-color: var(--primary-theme-color);
   min-height: 100vh;
-  color: white;
 }
 
 .header {
@@ -86,14 +84,14 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   padding: 40px 0;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text-muted);
 }
 
 .spinner {
   width: 32px;
   height: 32px;
-  border: 3px solid rgba(255, 255, 255, 0.2);
-  border-top-color: white;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-top-color: var(--primary-theme-color);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 16px;

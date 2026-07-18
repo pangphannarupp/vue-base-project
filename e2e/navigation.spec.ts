@@ -8,27 +8,27 @@ test.describe('Navigation', () => {
     await expect(page).toHaveURL(/.*\/$/);
 
     // Navigate to Month
-    await page.locator('text="ខែ"').last().click();
+    await page.locator('text="ខែ" >> visible=true').first().click();
     await expect(page).toHaveURL(/.*\/month/);
     await expect(page.locator('.month-view')).toBeVisible();
 
     // Navigate to Events
-    await page.locator('text="ព្រឹត្តិការណ៍"').last().click();
+    await page.locator('text="ព្រឹត្តិការណ៍" >> visible=true').first().click();
     await expect(page).toHaveURL(/.*\/events/);
     await expect(page.locator('.events-view')).toBeVisible();
 
     // Navigate to Weather
-    await page.locator('text="អាកាសធាតុ"').last().click();
+    await page.locator('text="អាកាសធាតុ" >> visible=true').first().click();
     await expect(page).toHaveURL(/.*\/weather/);
     await expect(page.locator('.weather-view')).toBeVisible();
 
     // Navigate to More
-    await page.locator('text="ផ្សេងទៀត"').last().click();
+    await page.locator('text="ផ្សេងទៀត" >> visible=true').first().click();
     await expect(page).toHaveURL(/.*\/more/);
     await expect(page.locator('.more-view')).toBeVisible();
 
     // Navigate back to Day
-    await page.locator('text="ថ្ងៃ"').last().click();
+    await page.locator('text="ថ្ងៃ" >> visible=true').first().click();
     await expect(page).toHaveURL(/.*\/$/);
     await expect(page.locator('.day-view')).toBeVisible();
   });

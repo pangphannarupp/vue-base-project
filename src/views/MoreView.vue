@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { BizColorPickerSheet, BizCollapsingToolbar } from '@phanna/ui-framework';
+import { 
+  BizColorPickerSheet, 
+  BizColorPickerAlert, 
+  BizColorPickerIsland,
+  BizCollapsingToolbar,
+  BizSegment,
+  BizSegmentButton
+} from '@phanna/ui-framework';
 import {
   moonOutline, 
   calendarOutline, 
@@ -12,19 +19,28 @@ import {
   chatboxEllipsesOutline,
   shareSocialOutline,
   informationCircleOutline,
-  starOutline
+  starOutline,
+  albumsOutline,
+  alertCircleOutline,
+  phonePortraitOutline
 } from 'ionicons/icons';
 import SettingsGroup from '../components/SettingsGroup.vue';
 import SettingItem from '../components/SettingItem.vue';
+import WeekStartPicker from '../components/WeekStartPicker.vue';
 import { ThemeService } from '../services/ThemeService';
+import { SettingsService } from '../services/SettingsService';
 import { KhmerDate } from '@phanna/ui-framework/dist/KhmerDate';
 import vueSvg from '../assets/vue.svg';
 
-/** ព័ត៌មានកាលបរិច្ឆេទចន្ទគតិខ្មែរ (Khmer lunar date information) */
+/** 
+ * Computes the localized Khmer date details for the current date.
+ * Used for the subtitle in the collapsing header.
+ */
 const khmerDateInfo = computed(() => {
   return new KhmerDate(new Date()).toLunar();
 });
 
+/** Formats the Khmer lunar date info into a readable subtitle string */
 const subtitleText = computed(() => {
   const info = khmerDateInfo.value;
   return `ឆ្នាំ${info.zodiacYear} ${info.stem} ព.ស. ${info.lunarYear}`;
@@ -38,8 +54,26 @@ const renderIcon = (iconStr: string) => {
   return iconStr;
 };
 
-/** ស្ថានភាពបង្ហាញម៉ឺនុយជ្រើសរើសពណ៌ (Theme picker modal state) */
+/** 
+ * ស្ថានភាពបង្ហាញម៉ឺនុយជ្រើសរើសពណ៌ (Theme picker modal state) 
+ * Controls the visibility of the Color Picker.
+ */
 const showThemePicker = ref(false);
+/** Tracks the currently selected theme color for the UI binding */
+const currentThemeColor = ref(ThemeService.getCurrentColor());
+
+/** Controls the visibility of the Week Start configuration picker */
+const showWeekStartPicker = ref(false);
+
+/** 
+ * ទម្រង់នៃការបង្ហាញម៉ឺនុយ (Popup display style) 
+ * Two-way binding for the popup style preference ('sheet', 'alert', 'island').
+ * Reads from and writes to the global SettingsService.
+ */
+const popupStyle = computed({
+  get: () => SettingsService.popupStyle.value,
+  set: (val: string) => SettingsService.setPopupStyle(val)
+});
 
 /** បញ្ជីពណ៌ (List of colors from ThemeService) */
 const themeColors = ThemeService.THEME_COLORS;
@@ -49,9 +83,10 @@ const openThemePicker = () => {
   showThemePicker.value = true;
 };
 
-/** ជ្រើសរើសពណ៌ថ្មី (Select new color) */
+/** ជ្រើសរើសពណ៌ស្បែកថ្មី (Select a new theme color) */
 const selectTheme = (color: string) => {
   ThemeService.setTheme(color);
+  currentThemeColor.value = color;
   showThemePicker.value = false;
 };
 </script>
@@ -80,12 +115,34 @@ const selectTheme = (color: string) => {
 
       <!-- ខ្លឹមសារនៃការកំណត់ (Settings content) -->
       <div class="settings-content">
+        <!-- ក្រុមការកំណត់ទម្រង់ (Popup Style Setting) -->
+        <SettingsGroup title="Popup Style">
+          <div style="padding: 0 16px 16px;">
+            <BizSegment v-model="popupStyle">
+              <BizSegmentButton value="sheet">
+                <template #icon><span v-html="renderIcon(albumsOutline)" class="segment-icon-wrapper"></span></template>
+                ផ្ទាំង
+              </BizSegmentButton>
+              <BizSegmentButton value="alert">
+                <template #icon><span v-html="renderIcon(alertCircleOutline)" class="segment-icon-wrapper"></span></template>
+                សារប្រាប់
+              </BizSegmentButton>
+              <BizSegmentButton value="island">
+                <template #icon><span v-html="renderIcon(phonePortraitOutline)" class="segment-icon-wrapper"></span></template>
+                កោះ
+              </BizSegmentButton>
+            </BizSegment>
+          </div>
+        </SettingsGroup>
+
         <!-- ក្រុមការកំណត់ប្រតិទិន (Calendar Setting Group) -->
         <SettingsGroup title="Calendar Setting">
           <div @click="openThemePicker" class="clickable-setting">
             <SettingItem :icon="renderIcon(moonOutline)" label="ផ្លាស់ប្តូរស្បែក" />
           </div>
-          <SettingItem :icon="renderIcon(calendarOutline)" label="ថ្ងៃផ្តើមនៃសប្តាហ៍" />
+          <div class="clickable-setting" @click="showWeekStartPicker = true">
+            <SettingItem :icon="renderIcon(calendarOutline)" label="ថ្ងៃផ្តើមនៃសប្តាហ៍" />
+          </div>
           <SettingItem :icon="renderIcon(alarmOutline)" label="កំណត់ការជូនដំណឹង" />
           <SettingItem :icon="renderIcon(globeOutline)" label="ប្ដូរភាសា" />
         </SettingsGroup>
@@ -111,9 +168,42 @@ const selectTheme = (color: string) => {
       </div>
     </BizCollapsingToolbar>
 
+    <WeekStartPicker 
+      v-model="showWeekStartPicker" 
+      :popupStyle="popupStyle" 
+    />
+
     <!-- ម៉ឺនុយជ្រើសរើសស្បែកពណ៌ (Theme Picker Bottom Sheet) using UI framework -->
     <BizColorPickerSheet 
+      v-if="popupStyle === 'sheet'"
       v-model="showThemePicker"
+      :colorValue="currentThemeColor"
+      title="ជ្រើសរើសពណ៌ស្បែក"
+      :colors="themeColors"
+      :showActionButtons="true"
+      cancelText="បោះបង់"
+      confirmText="យល់ព្រម"
+      @update:colorValue="selectTheme"
+    />
+
+    <!-- ម៉ឺនុយជ្រើសរើសស្បែកពណ៌ជាប្រភេទ Alert (Theme Picker Alert) -->
+    <BizColorPickerAlert 
+      v-if="popupStyle === 'alert'"
+      v-model="showThemePicker"
+      :colorValue="currentThemeColor"
+      title="ជ្រើសរើសពណ៌ស្បែក"
+      :colors="themeColors"
+      :showActionButtons="true"
+      cancelText="បោះបង់"
+      confirmText="យល់ព្រម"
+      @update:colorValue="selectTheme"
+    />
+
+    <!-- ម៉ឺនុយជ្រើសរើសស្បែកពណ៌ជាប្រភេទ Island (Theme Picker Island) -->
+    <BizColorPickerIsland 
+      v-if="popupStyle === 'island'"
+      v-model="showThemePicker"
+      :colorValue="currentThemeColor"
       title="ជ្រើសរើសពណ៌ស្បែក"
       :colors="themeColors"
       :showActionButtons="true"
@@ -125,6 +215,40 @@ const selectTheme = (color: string) => {
 </template>
 
 <style scoped>
+/* Fix SVG icon vertical alignment inside slots */
+.segment-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Fix ionicons outline variants rendering as solid shapes by providing missing ionicon classes */
+:deep(.ionicon-fill-none) {
+  fill: none !important;
+}
+:deep(.ionicon-stroke-width) {
+  stroke-width: 32px !important;
+  stroke: currentColor !important;
+}
+
+.setting-select-btn {
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #eee;
+  background: #f9f9f9;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+.setting-select-btn.active {
+  background: color-mix(in srgb, var(--primary-theme-color) 10%, transparent);
+  border-color: var(--primary-theme-color);
+  color: var(--primary-theme-color);
+  font-weight: 600;
+}
+
 .more-view {
   background-color: #ffffff;
   height: 100%;
@@ -148,7 +272,6 @@ const selectTheme = (color: string) => {
   background-size: cover;
   background-position: center bottom;
   background-blend-mode: overlay;
-  border-bottom-right-radius: 48px;
 }
 
 /* Custom Title and Profile Layout */
