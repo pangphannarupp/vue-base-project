@@ -31,7 +31,6 @@ defineProps<{
   background-color: var(--primary-theme-color);
   color: white;
   padding: 40px 24px 24px 24px;
-  border-bottom-right-radius: 48px;
   position: relative;
   display: flex;
   justify-content: space-between;

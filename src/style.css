@@ -8,12 +8,17 @@
   --text-muted: #64748b;
   --primary: #646cff;
   --primary-theme-color: #e53935;
-  
+
   /* @phanna/ui-framework Theme Overrides */
   --biz-primary: var(--primary-theme-color);
   --biz-primary-color: var(--primary-theme-color);
   --biz-primary-variant: var(--primary-theme-color);
   --biz-calendar-btn-confirm-bg: var(--primary-theme-color);
+
+  /* Navigation Rail Theme Overrides */
+  --biz-rail-active-bg: color-mix(in srgb, var(--primary-theme-color) 20%, transparent);
+  --biz-rail-active-color: var(--primary-theme-color);
+  --biz-rail-active-label: var(--primary-theme-color);
 }
 
 /* Force Calendar and Picker specific overrides globally */
@@ -31,9 +36,11 @@
 .biz-bottom-nav-item.is-active .biz-nav-indicator {
   background-color: color-mix(in srgb, var(--primary-theme-color) 20%, transparent) !important;
 }
+
 .biz-bottom-nav-item.is-active .biz-nav-icon {
   color: var(--primary-theme-color) !important;
 }
+
 .biz-bottom-nav-item.is-active .biz-nav-label {
   color: var(--primary-theme-color) !important;
 }
@@ -58,4 +65,104 @@ body {
 
 #app {
   width: 100%;
+}
+
+/* Limit bottom sheet width on larger screens */
+@media (min-width: 768px) {
+  .biz-bottom-sheet-container {
+    max-width: 800px !important;
+    margin: 0 auto !important;
+  }
+}
+
+/* Month/Year picker translations */
+.picker-headers .picker-col-header {
+  font-size: 0 !important;
+}
+
+.picker-headers .picker-col-header:nth-child(1)::after {
+  content: "ខែ";
+  font-size: 16px;
+  display: block;
+}
+
+.picker-headers .picker-col-header:nth-child(2)::after {
+  content: "ឆ្នាំ";
+  font-size: 16px;
+  display: block;
+}
+
+/* Make picker action buttons align right with small width like other pickers, and translate to Khmer */
+.picker-actions {
+  justify-content: flex-end !important;
+}
+
+.btn-close-picker,
+.btn-cancel {
+  flex: none !important;
+  padding: 8px 16px !important;
+  font-size: 0 !important;
+}
+
+.btn-close-picker::after,
+.btn-cancel::after {
+  content: "បិទ";
+  font-size: 16px;
+}
+
+.btn-confirm-picker,
+.btn-confirm {
+  flex: none !important;
+  padding: 8px 16px !important;
+  font-size: 0 !important;
+}
+
+.btn-confirm-picker::after,
+.btn-confirm::after {
+  content: "យល់ព្រម";
+  font-size: 16px;
+}
+
+/* Fix Color Picker Island height cutting off buttons */
+body .color-picker-island,
+.biz-dynamic-island-wrapper.color-picker-island {
+  --biz-island-expanded-height: min(560px, calc(100vh - 40px)) !important;
+  --biz-island-expanded-width: 340px !important;
+}
+
+/* Fix Year Picker Island height cutting off buttons */
+body .year-picker-island,
+.biz-dynamic-island-wrapper.year-picker-island {
+  --biz-island-expanded-height: min(360px, calc(100vh - 40px)) !important;
+  --biz-island-expanded-width: 340px !important;
+}
+
+/* Fix Flexbox overflow preventing scrolling in dynamic islands */
+body .biz-dynamic-island .island-expanded,
+body .biz-dynamic-island .expanded-body {
+  min-height: 0 !important;
+}
+
+/* Increase color picker width on tablet screens */
+@media (min-width: 768px) {
+  body .color-picker-island,
+  .biz-dynamic-island-wrapper.color-picker-island {
+    --biz-island-expanded-width: 460px !important;
+  }
+}
+
+/* Decrease color item size on mobile screens to fit more colors compactly */
+@media (max-width: 480px) {
+  body .color-picker-island,
+  .biz-dynamic-island-wrapper.color-picker-island {
+    --biz-island-expanded-height: min(520px, calc(100vh - 40px)) !important;
+  }
+  body .color-swatch {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  body .color-grid {
+    gap: 8px !important;
+    justify-content: center;
+  }
 }

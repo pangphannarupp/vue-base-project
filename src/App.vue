@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { ThemeService } from './services/ThemeService';
+import { SettingsService } from './services/SettingsService';
 
 onMounted(() => {
   ThemeService.initTheme();
+  SettingsService.init();
 });
 </script>
 

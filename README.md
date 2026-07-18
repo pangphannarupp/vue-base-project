@@ -9,8 +9,9 @@ A beautiful, modular, and fully featured smart calendar application tailored for
 - **Public Holidays**: Includes a built-in `HolidayService` that dynamically fetches and displays Cambodian national and international public holidays in real-time as you swipe between calendar months.
 - **Live Weather Integration**: Uses a free Open-Meteo API to dynamically fetch and display real-time weather conditions directly inside the application.
 - **Zodiac Animal Integration**: Automatically computes and beautifully renders the correct zodiac animal icon for any given year, including dual-zodiac combinations.
-- **Modern UI Framework**: Built completely on top of the custom `@phanna/ui-framework`, utilizing advanced components like `BizKhmerCalendar`, `BizBottomSheet`, `BizNoResult`, `BizSegment`, and `BizYearPickerSheet` for a premium native app feel.
-- **Fully Localized**: Beautifully typeset with the native **Battambang** font across the entire interface. The codebase itself is also thoroughly documented with Khmer language comments for all properties, classes, and Vue functions!
+- **Start-of-Week Customization**: Personalize your calendar grid by dynamically shifting the first day of the week (Sunday vs. Monday), leveraging the global `SettingsService`.
+- **Modern UI Framework**: Built completely on top of the custom `@phanna/ui-framework`, utilizing advanced components like `BizKhmerCalendar`, `BizBottomSheet`, `BizNoResult`, `BizSegment`, and highly responsive `BizDynamicIsland` popups for a premium native app feel.
+- **Fully Localized**: Beautifully typeset with the native **Battambang** font across the entire interface. The codebase itself is also thoroughly documented with both English JSDoc and Khmer language comments for all properties, classes, and Vue functions!
 
 ## 🛠 Tech Stack
 
@@ -76,5 +77,7 @@ The output will be generated in the `dist/` directory.
 ## 🎨 Architecture Highlights
 
 - **`ThemeService.ts`**: An elegant service that manages CSS variables dynamically via the `:root` pseudo-class and safely persists user color preferences.
-- **`HolidayService.ts`**: Provides a clean, static data source for national holidays, which the `MonthView.vue` naturally listens to via `@month-changed` emitted events!
-- **Deep CSS Scoping & Specificity**: Utilizes Vue's `:deep()` compiler macros and the `!important` global wildcard overrides to ensure framework components perfectly adopt user-selected theme colors.
+- **`HolidayService.ts`**: Provides a clean, static data source for national holidays, which the `MonthView.vue` naturally listens to via `@month-changed` emitted events.
+- **`SettingsService.ts`**: A centralized, reactive state manager built with Vue's Composition API to manage user preferences like `popupStyle` and `firstDayOfWeek`.
+- **Robust UI Fixes**: Incorporates advanced CSS fixes for dynamic UI components, such as `min-height: 0` constraints for flexbox overflow bugs, and `min(height, calc(100vh - 40px))` viewport bounding for mobile/tablet responsive islands.
+- **Deep CSS Scoping & Specificity**: Utilizes Vue's `:deep()` compiler macros and global overrides to ensure framework components beautifully adopt user-selected theme colors and adapt to device viewports.

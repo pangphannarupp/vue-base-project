@@ -41,10 +41,12 @@ defineProps<{
 .weather-card {
   height: 160px;
   border-radius: 16px;
+  background-color: var(--primary-theme-color);
   background-size: cover;
   background-position: center;
   position: relative;
   overflow: hidden;
+  color: white;
 }
 
 .card-overlay {

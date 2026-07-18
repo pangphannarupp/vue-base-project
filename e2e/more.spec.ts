@@ -7,7 +7,7 @@ test.describe('More View Settings', () => {
 
   test('renders MoreView correctly', async ({ page }) => {
     await expect(page.locator('.more-view')).toBeVisible();
-    await expect(page.getByText('ប្រតិទិនឆ្លាតវៃ')).toBeVisible();
+    await expect(page.locator('h1:has-text("ប្រតិទិនឆ្លាតវៃ")')).toBeVisible();
     await expect(page.getByText('Calendar Setting')).toBeVisible();
   });
 

@@ -1,27 +1,32 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 
-import { BizKhmerCalendar, BizBottomSheet, BizNoResult } from '@phanna/ui-framework';
+import { BizKhmerCalendar, BizNoResult } from '@phanna/ui-framework';
 import { KhmerDate } from '@phanna/ui-framework/dist/KhmerDate';
 import EventItem from '../components/EventItem.vue';
-import KhmerDateCard from '../components/KhmerDateCard.vue';
-import ZodiacAnimalCard from '../components/ZodiacAnimalCard.vue';
+import DateDetailPopup from '../components/DateDetailPopup.vue';
 import { HolidayService } from '../services/HolidayService';
+import { SettingsService } from '../services/SettingsService';
 
 
+/**
+ * MonthView - The primary calendar view.
+ * Integrates BizKhmerCalendar with local holiday fetching and date detail popups.
+ */
 
-
-/** កាលបរិច្ឆេទដែលបានជ្រើសរើស (Currently selected date) */
+/** កាលបរិច្ឆេទដែលបានជ្រើសរើស (Currently selected Gregorian date) */
 const selectedDate = ref(new Date());
+/** Controls the visibility of the DateDetailPopup */
 const showSheet = ref(false);
 
-/** តាមដានខែ និងឆ្នាំដែលកំពុងបង្ហាញនៅលើប្រតិទិន (Track currently displayed month/year) */
+/** តាមដានខែ និងឆ្នាំដែលកំពុងបង្ហាញនៅលើប្រតិទិន (Tracks the currently displayed month/year for fetching holidays) */
 const displayedYear = ref(selectedDate.value.getFullYear());
 const displayedMonth = ref(selectedDate.value.getMonth());
 
 const WEEKDAYS = ['អាទិត្យ', 'ច័ន្ទ', 'អង្គារ', 'ពុធ', 'ព្រហស្បតិ៍', 'សុក្រ', 'សៅរ៍'];
 const KHMER_MONTHS = ['មករា', 'កុម្ភៈ', 'មីនា', 'មេសា', 'ឧសភា', 'មិថុនា', 'កក្កដា', 'សីហា', 'កញ្ញា', 'តុលា', 'វិច្ឆិកា', 'ធ្នូ'];
 
+/** Computes the localized Khmer date details for the currently selected date */
 const khmerDateInfo = computed(() => {
   return new KhmerDate(selectedDate.value).toLunar();
 });
@@ -39,14 +44,23 @@ const currentMonthEvents = computed(() => {
   return monthGroup ? monthGroup.events : [];
 });
 
-/** អនុម័តពេលអូសប្តូរខែ (Handle calendar month swipe/change) */
+/**
+ * អនុម័តពេលអូសប្តូរខែ (Handle calendar month swipe/change)
+ * Updates local refs to trigger currentMonthEvents re-computation.
+ * @param {number} year - The newly displayed year.
+ * @param {number} month - The newly displayed month (0-11).
+ */
 const onMonthChanged = (year: number, month: number) => {
   displayedYear.value = year;
   // Assume component emits 0-11 for month like JS Date, but just in case we normalized above
   displayedMonth.value = month;
 };
 
-/** អនុម័តការជ្រើសរើសកាលបរិច្ឆេទ (Handle date selection from calendar) */
+/**
+ * អនុម័តការជ្រើសរើសកាលបរិច្ឆេទ (Handle date selection from calendar)
+ * Updates the selected date and triggers the detail popup.
+ * @param {any} selection - The date selection object or Date emitted by BizKhmerCalendar.
+ */
 const onDateSelected = (selection: any) => {
   if (selection && selection.date instanceof Date) {
     selectedDate.value = selection.date;
@@ -61,8 +75,6 @@ const onDateSelected = (selection: any) => {
   showSheet.value = true;
 };
 
-
-
 </script>
 
 <template>
@@ -72,6 +84,7 @@ const onDateSelected = (selection: any) => {
     <div class="calendar-container">
       <BizKhmerCalendar 
         :initialDate="selectedDate" 
+        :config="{ firstDayOfWeek: SettingsService.firstDayOfWeek.value }"
         @date-selected="onDateSelected"
         @month-changed="onMonthChanged"
       />
@@ -104,18 +117,13 @@ const onDateSelected = (selection: any) => {
     </div>
 
     <!-- ផ្ទាំងបញ្ជូលពីក្រោម (Bottom Sheet for Selected Date) using UI framework -->
-    <BizBottomSheet v-model="showSheet">
-      <template #header>
-        <div class="sheet-header">
-        </div>
-      </template>
-      
-      <div class="sheet-content">
-        <h2 class="date-large">{{ selectedDate.getDate() }} {{ WEEKDAYS[selectedDate.getDay()] }}</h2>
-        <KhmerDateCard :date="selectedDate" :khmerDateInfo="khmerDateInfo" />
-        <ZodiacAnimalCard :zodiacYear="khmerDateInfo.zodiacYear" zodiacSecondary="រកា" />
-      </div>
-    </BizBottomSheet>
+    <DateDetailPopup 
+      v-model="showSheet" 
+      :popupStyle="SettingsService.popupStyle.value"
+      :selectedDate="selectedDate"
+      :khmerDateInfo="khmerDateInfo"
+      :WEEKDAYS="WEEKDAYS"
+    />
   </div>
 </template>
 
@@ -191,22 +199,6 @@ const onDateSelected = (selection: any) => {
   fill: currentColor;
 }
 
-.date-large {
-  font-size: 2rem;
-  font-weight: 500;
-  margin: 0 0 24px 0;
-  color: #1a1a1a;
-  text-align: center;
-}
-
-.sheet-content {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-}
-
 /* Compact No-Result Component */
 .event-list :deep(.biz-no-result) {
   padding: 16px 20px !important;
@@ -223,38 +215,3 @@ const onDateSelected = (selection: any) => {
 }
 </style>
 
-<style>
-/* 
-  Global overrides for BizKhmerCalendar MonthPickerSheet 
-  since the ui-framework package has hardcoded English text.
-*/
-.picker-headers .picker-col-header {
-  font-size: 0 !important;
-}
-.picker-headers .picker-col-header:nth-child(1)::after {
-  content: "ខែ";
-  font-size: 16px;
-  display: block;
-}
-.picker-headers .picker-col-header:nth-child(2)::after {
-  content: "ឆ្នាំ";
-  font-size: 16px;
-  display: block;
-}
-
-.btn-close-picker {
-  font-size: 0 !important;
-}
-.btn-close-picker::after {
-  content: "បិទ";
-  font-size: 16px;
-}
-
-.btn-confirm-picker {
-  font-size: 0 !important;
-}
-.btn-confirm-picker::after {
-  content: "យល់ព្រម";
-  font-size: 16px;
-}
-</style>
