@@ -39,14 +39,14 @@ This project uses **Vue 3 Composition API** with `<script setup>` syntax and **T
 
 ```mermaid
 graph TD
-    A[main.ts] --> B[App.vue]
-    B --> C[Vue Router]
-    C --> D[views/MonthView.vue]
-    C --> E[views/MoreView.vue]
-    D --> F[components/...]
-    D --> G[services/HolidayService.ts]
-    E --> H[services/ThemeService.ts]
-    F --> I[@phanna/ui-framework]
+    A["main.ts"] --> B["App.vue"]
+    B --> C["Vue Router"]
+    C --> D["views/MonthView.vue"]
+    C --> E["views/MoreView.vue"]
+    D --> F["components/..."]
+    D --> G["services/HolidayService.ts"]
+    E --> H["services/ThemeService.ts"]
+    F --> I["@phanna/ui-framework"]
 ```
 
 ### Key Directories / ថតសំខាន់ៗ
