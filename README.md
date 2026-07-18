@@ -74,6 +74,34 @@ npm run build
 ```
 The output will be generated in the `dist/` directory.
 
+## 🧪 Testing
+
+This project maintains a robust testing suite to ensure high code quality, UI consistency, and regression prevention.
+
+### Unit & Component Tests (Vitest & Vue Test Utils)
+We use **Vitest** paired with **Vue Test Utils** to validate individual functions, services, and isolated Vue components.
+- **Unit Tests**: Found in `tests/services/`, these tests independently verify core logic like date conversions, color management (`ThemeService`), and static data parsing (`HolidayService`).
+- **Component Tests**: Found in `tests/components/` and `tests/views/`, these ensure that UI elements from `@phanna/ui-framework` render correctly, handle prop mutations, and emit the expected events.
+- **Run Unit/Component Tests**:
+  ```bash
+  npm run test:unit
+  ```
+
+### End-to-End (E2E) Tests (Playwright)
+We use **Playwright** to simulate real user interactions across the entire application workflow in a headless Chromium browser.
+- These tests (located in the `e2e/` directory) validate critical user journeys like navigating between bottom tabs, dynamically opening BottomSheets when a calendar day is clicked, and selecting a new global theme color from the settings view.
+- **Run E2E Tests**:
+  ```bash
+  npm run test:e2e
+  ```
+  *(Note: You may need to run `npx playwright install` before running these for the first time to download the necessary browser binaries.)*
+
+### Automation Tests (CI/CD)
+The testing suite is fully integrated into our **GitHub Actions** deployment pipeline.
+- Whenever a push is made to the `main` branch, the `.github/workflows/deploy.yml` pipeline is triggered.
+- The pipeline explicitly runs the Unit and Component test suite.
+- **Deployment Blocker**: If any automated test fails, the GitHub Action automatically aborts the job, preventing faulty code from being built and deployed to the live GitHub Pages environment.
+
 ## 🎨 Architecture Highlights
 
 - **`ThemeService.ts`**: An elegant service that manages CSS variables dynamically via the `:root` pseudo-class and safely persists user color preferences.
