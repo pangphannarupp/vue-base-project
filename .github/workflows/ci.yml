@@ -26,6 +26,11 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps chromium
 
-    - name: Run Build and Tests
-      # We configured 'npm run build' to automatically run Unit Tests & E2E Tests first!
+    - name: Run Unit Tests
+      run: npm run test:unit
+
+    - name: Run E2E Tests
+      run: npm run test:e2e
+
+    - name: Run Build
       run: npm run build

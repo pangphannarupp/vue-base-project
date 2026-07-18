@@ -1,0 +1,32 @@
+# Contributing Guidelines / គោលការណ៍ណែនាំក្នុងការចូលរួម
+
+First off, thank you for considering contributing to the **Khmer Smart Calendar**!  
+ជាដំបូង សូមអរគុណដែលអ្នកបានពិចារណាក្នុងការចូលរួមចំណែកអភិវឌ្ឍន៍ **ប្រតិទិនឆ្លាតវៃខ្មែរ**!
+
+This document sets the ground rules for contributing to the project.  
+ឯកសារនេះកំណត់ច្បាប់មូលដ្ឋានសម្រាប់ការចូលរួមក្នុងគម្រោងនេះ។
+
+## 1. Code of Conduct / ក្រមសីលធម៌
+By participating in this project, you are expected to uphold a welcoming and respectful environment. Harassment of any kind will not be tolerated.  
+ដោយការចូលរួមក្នុងគម្រោងនេះ អ្នកត្រូវបានរំពឹងថានឹងរក្សាបរិយាកាសស្វាគមន៍ និងការគោរពគ្នាទៅវិញទៅមក។ ការបៀតបៀនគ្រប់ទម្រង់នឹងមិនត្រូវបានអត់ឱនឲ្យឡើយ។
+
+## 2. Reporting Bugs / ការរាយការណ៍អំពីបញ្ហា (Bugs)
+If you find a bug, please create a new **Issue** on GitHub. Include:  
+ប្រសិនបើអ្នករកឃើញបញ្ហាណាមួយ សូមបង្កើត **Issue** ថ្មីនៅលើ GitHub ដោយភ្ជាប់មកជាមួយនូវ៖
+- A clear, descriptive title. (ចំណងជើងច្បាស់លាស់ និងពិពណ៌នាបានល្អ)
+- Steps to reproduce the bug. (ជំហានដើម្បីឲ្យយើងអាចបង្កើតកំហុសនោះឡើងវិញបាន)
+- Expected vs. actual behavior. (អ្វីដែលរំពឹងទុក ធៀបនឹងអ្វីដែលបានកើតឡើងជាក់ស្តែង)
+
+## 3. Submitting Pull Requests / ការដាក់ស្នើសំណើទាញយក (Pull Requests)
+We welcome code contributions! Before you submit a PR, ensure you have read our [Development Guide](docs/DEVELOPMENT.md) and [Workflow Guide](docs/WORKFLOW.md).  
+យើងសូមស្វាគមន៍រាល់ការចូលរួមសរសេរកូដ! មុនពេលអ្នកដាក់ស្នើ PR សូមប្រាកដថាអ្នកបានអាន [មគ្គុទ្ទេសក៍អភិវឌ្ឍន៍](docs/DEVELOPMENT.md) និង [មគ្គុទ្ទេសក៍លំហូរការងារ](docs/WORKFLOW.md) របស់យើង។
+
+**Checklist (បញ្ជីត្រួតពិនិត្យ):**
+- [ ] You have created a feature branch (e.g., `feature/awesome-new-thing`). (អ្នកបានបង្កើតមែកធាងថ្មី)
+- [ ] Your code follows the existing TypeScript styles and avoids `any`. (កូដរបស់អ្នកអនុវត្តតាមស្តង់ដារ TypeScript)
+- [ ] You have written Unit Tests for any new business logic. (អ្នកបានសរសេរការសាកល្បងឯកតា (Unit Tests) សម្រាប់តក្កវិជ្ជាថ្មីៗ)
+- [ ] All local tests pass (`npm run test:unit` and `npm run test:e2e`). (រាល់ការសាកល្បងបានឆ្លងកាត់ដោយជោគជ័យ)
+- [ ] Your PR targets the **`development`** branch (NOT `main`). (PR របស់អ្នកផ្តោតលើមែកធាង `development` មិនមែន `main` ទេ)
+
+Once you submit your PR, our GitHub Actions CI pipeline will automatically run your code against our testing suite.  
+នៅពេលអ្នកដាក់ស្នើ PR បំពង់ CI របស់ GitHub Actions នឹងដំណើរការកូដរបស់អ្នកដោយស្វ័យប្រវត្តិដើម្បីសាកល្បង។
